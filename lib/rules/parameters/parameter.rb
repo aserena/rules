@@ -5,6 +5,8 @@ module Rules::Parameters
     attr_accessor :name, :type, :key
 
     def self.cast(value, type)
+      type = :array if value.is_a?(String) && value.include?(',')
+
       return value unless type
       case type
       when :date
@@ -19,6 +21,9 @@ module Rules::Parameters
         value.to_s
       when :regexp
         Regexp.new(value.to_s)
+      when :array
+        array = value.split(',')
+        /[a-zA-Z]/.match(value) ? array : array.map(&:to_i)
       else
         raise "Don't know how to cast #{type}"
       end
@@ -35,5 +40,6 @@ module Rules::Parameters
     def to_s
       name
     end
+
   end
 end

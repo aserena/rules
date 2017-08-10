@@ -11,6 +11,29 @@ module Rules
       self.requires_rhs = true
     end
 
+    define_evaluator :belongs do
+      self.evaluation_method = ->(lhs, rhs) do
+        if rhs.is_a?(Array)
+          rhs.include?(lhs)
+        else
+          rhs == lhs
+        end
+      end
+      self.name = 'belongs'
+      self.requires_rhs = true
+    end
+
+    define_evaluator :not_belongs do
+      self.evaluation_method = ->(lhs, rhs) do
+        if rhs.is_a?(Array)
+          !rhs.include?(lhs)
+        else
+          rhs != lhs
+        end
+      end
+      self.name = 'does not belong'
+    end
+
     define_evaluator :contains do
       self.evaluation_method = ->(lhs, rhs) { lhs.include?(rhs) }
       self.name = 'contains'

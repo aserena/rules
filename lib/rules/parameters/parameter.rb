@@ -20,7 +20,7 @@ module Rules::Parameters
       when :string
         value.to_s
       when :regexp
-        Regexp.new(value.to_s)
+        Regexp.new(value.to_s, true)
       when :array
         array = value.split(',')
         /[a-zA-Z]/.match(value) ? array : array.map(&:to_i)
